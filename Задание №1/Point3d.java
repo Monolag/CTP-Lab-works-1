@@ -33,14 +33,13 @@ public class Point3d {
     }
 
     public boolean compare(Point3d point){
-        return (this == point);
+        return  (point.getX() == this.getX()) && (point.getY() == this.getY()) && (point.getZ() == this.getZ());
     }
 
-    public Point3d distanceTo(Point3d point){
-        Point3d temp = null;
-        temp.xCoord = Math.abs(this.xCoord - point.xCoord);
-        temp.yCoord = Math.abs(this.yCoord - point.yCoord);
-        temp.zCoord = Math.abs(this.zCoord - point.zCoord);
-        return temp;
+    public double distanceTo(Point3d point){
+
+        return Math.sqrt(Math.pow((point.getX()-this.getX()),2)
+		+ Math.pow((point.getY()-this.getY()),2)
+		+ Math.pow((point.getZ()-this.getZ()),2));
     }
 }
