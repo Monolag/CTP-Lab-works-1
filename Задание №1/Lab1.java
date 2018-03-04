@@ -7,9 +7,14 @@ public class Lab1 {
 
         double Area = 0;
 
-        //Heron's Formula
+       double	a = point[0].distanceTo(point[1]);
+	   double	b = point[1].distanceTo(point[2]);
+	   double	c = point[2].distanceTo(point[0]);
+	   double   s = (a+b+c)/2; 
+	   Area = Math.sqrt(s*(s-a)*(s-b)*(s-c));
+	   
 
-        return 2 * Area;
+        return Area;
     }
 
 
