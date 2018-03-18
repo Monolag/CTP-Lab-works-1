@@ -66,7 +66,7 @@ public class FractalExplorer {
 				enableUI(true);
 			}
 		}
-		}
+	}
 
 
 		private class FractalHandler implements ActionListener {
@@ -79,19 +79,19 @@ public class FractalExplorer {
 				if (selectedItem.equals("Mandelbrot"))  {
 					generate = new Mandelbrot();
 				}
-						else if (selectedItem.equals("Tricorn")) {
+				else if (selectedItem.equals("Tricorn")) {
 					generate = new Tricorn();
 				}
-						else if (selectedItem.equals("BurningShip")) {
+				else if (selectedItem.equals("BurningShip")) {
 					generate = new BurningShip();
 				}
-						else {
+				else {
 					JOptionPane.showMessageDialog(null, "Error: Couldn't recognize choice");
 					return;
 				}
-						range = new Rectangle2D.Double();
-						generate.getInitialRange(range);
-						drawFractal();
+				range = new Rectangle2D.Double();
+				generate.getInitialRange(range);
+				drawFractal();
 			}
 
 			else if (cmd.equals("reset")) {
@@ -103,7 +103,7 @@ public class FractalExplorer {
 
 			else if (cmd.equals("save")) {
 				JFileChooser chooser = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("png", "png");
 				chooser.setFileFilter(filter);
 				chooser.setAcceptAllFileFilterUsed(false);
 				if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -116,12 +116,8 @@ public class FractalExplorer {
 						ImageIO.write(mImage.getImage(), "png", f);
 					}
 					catch (IOException exc) {
-						JOptionPane.showMessageDialog(null, "Error: Couldn't save image ( " + exc.getMessage() + " )");
 					}
 				}
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Error: Couldn't recognize action");
 			}
 		}
     }
