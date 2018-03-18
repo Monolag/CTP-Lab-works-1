@@ -9,7 +9,6 @@ public class JImageDisplay extends JComponent {
 
     public JImageDisplay(int width, int height) {
 		mImage = new BufferedImage(width,height, BufferedImage.TYPE_INT_RGB);
-
 		Dimension size = new Dimension(width, height);
 		super.setPreferredSize(size);
     }
