@@ -11,14 +11,6 @@ public class URL_DP {
         _URL = URL;
     }
 
-    public String getURL() {
-        return _URL;
-    }
-
-    public int getDepth() {
-        return _Depth;
-    }
-
     public String ToString() {
         String stringDepth = Integer.toString(_Depth);
         return stringDepth + '\t' + _URL;
@@ -42,5 +34,13 @@ public class URL_DP {
         catch (MalformedURLException e) {
             return null;
         }
+    }
+
+    public String getURL() {
+        return _URL;
+    }
+
+    public int getDepth() {
+        return _Depth;
     }
 }

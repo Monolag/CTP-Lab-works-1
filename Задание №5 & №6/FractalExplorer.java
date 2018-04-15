@@ -122,7 +122,7 @@ public class FractalExplorer {
 		}
     }
 
-    private class MouseHandler extends MouseAdapter {
+    private class mouseListener extends MouseAdapter {
 	
 		public void mouseClicked(MouseEvent e) {
 			if (need_rows > 0) {
