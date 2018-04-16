@@ -9,6 +9,8 @@ public class WebCrawler {
 
         int depth = 0;
 		String URL = "", sDepth = "";
+
+		//Проверка введенных данных
         if (args.length != 2) {
             System.out.println("usage: java Crawler <URL> <depth>");
             System.exit(1);
@@ -22,20 +24,42 @@ public class WebCrawler {
         }
         LinkedList<URL_DP> checkURLs = new LinkedList<URL_DP>();
         LinkedList<URL_DP> checkedURLs = new LinkedList<URL_DP>();
+        LinkedList<URL_DP> checkingURLs = new LinkedList<URL_DP>();
+        URL_DP usedDP = new URL_DP(args[0], 0);
+        LinkedList<String> links = new LinkedList<String>();
+
 
         while(checkURLs.size() != 0) {
-        
+
+            URL_DP depthP = checkURLs.pop();
+            checkedURLs.add(depthP);
+            int myDepth = depthP.getDepth();
+
+            links = WebCrawler.getLinks(usedDP);
+
+            // TODO Проверить: если заявленная глубина не достигнута,
+            // TODO добавить сайт, который не был проверен
+
+        }
+        //Пройти через все собранные URL и вывести каждый
+        Iterator<URL_DP> iterator = checkedURLs.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
         }
     }
 
-    LinkedList<String> getLinks(URL_DP _URL){
-        LinkedList<String> URLs = new LinkedList<String>();
+    public static LinkedList<String> getLinks(URL_DP _URL){
 
+        LinkedList<String> URLs = new LinkedList<String>();
+        String endURL = "\"";
+        String startURL = "a href=\"";
+        //Создание соккета
         Socket socket;
         try {
             socket = new Socket(_URL.getHost(), 80);
         }
         catch(IOException ex){return null;}
+
 
         try {
 
@@ -43,25 +67,35 @@ public class WebCrawler {
         }
         catch(IOException ex){ return null;}
 
+        OutputStream ostr;
         try{
-            OutputStream ostr = socket.getOutputStream();
+            ostr = socket.getOutputStream();
         }
-        catch(IOException ex){
-            return null;
-        }
-        InputStream inStr;
+        catch(IOException ex){return null; }
 
+        InputStream inStr;
         try{
             inStr = socket.getInputStream();
         }
         catch(IOException ex){return null;}
 
-        InputStreamReader inStreamReader = new InputStreamReader(inStr);
-        BufferedReader BuffReader = new BufferedReader(inStreamReader);
-        boolean tryRead = true, hasCopy = true;
+        InputStreamReader readInput = new InputStreamReader(inStr);
+        BufferedReader readBuffer = new BufferedReader(readInput);
+        boolean tryRead = true;
 
         while(tryRead){
+            String text = "";
+            if (text == null) { tryRead = false; };
 
+            int index = 0;
+
+            while(index != -1){
+                //Найти начало нужной строки
+                index = text.indexOf(startURL, index);
+				
+				// TODO индексы начала и конца строки
+                URLs.add(text.substring(0,0));
+            }
         }
 
 
@@ -69,5 +103,4 @@ public class WebCrawler {
         String Host = _URL.getHost();
       return URLs ;
     }
-
 }
