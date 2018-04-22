@@ -16,7 +16,7 @@ public class WebCrawler {
             System.exit(1);
         } else {
             try {
-                depth = Integer.parseInt(sDepth);
+                depth = Integer.parseInt(args[1]);
             } catch (NumberFormatException nfe) {
                 System.out.println("usage: java Crawler <URL> <depth>");
                 System.exit(1);
@@ -27,10 +27,9 @@ public class WebCrawler {
         LinkedList<URL_DP> checkingURLs = new LinkedList<URL_DP>();
         URL_DP usedDP = new URL_DP(args[0], 0);
         LinkedList<String> links = new LinkedList<String>();
-
+        checkURLs.add(usedDP);
 
         while(checkURLs.size() != 0) {
-
             URL_DP depthP = checkURLs.pop();
             checkedURLs.add(depthP);
             int myDepth = depthP.getDepth();
@@ -49,6 +48,8 @@ public class WebCrawler {
     }
 
     public static LinkedList<String> getLinks(URL_DP _URL){
+        String Path = _URL.getPath();
+        String Host = _URL.getHost();
 
         LinkedList<String> URLs = new LinkedList<String>();
         String endURL = "\"";
@@ -73,6 +74,8 @@ public class WebCrawler {
         }
         catch(IOException ex){return null; }
 
+        // TODO тут должен быть какой-то запрос к серверу?
+
         InputStream inStr;
         try{
             inStr = socket.getInputStream();
@@ -85,22 +88,32 @@ public class WebCrawler {
 
         while(tryRead){
             String text = "";
+
+            try{
+                text = readBuffer.readLine();
+            }
+            catch(IOException ex){ return URLs;}
+
             if (text == null) { tryRead = false; };
 
             int index = 0;
+            int startIndex = 0;
+            int endIndex = 0;
 
             while(index != -1){
                 //Найти начало нужной строки
                 index = text.indexOf(startURL, index);
-				
-				// TODO индексы начала и конца строки
-                URLs.add(text.substring(0,0));
+                index += startURL.length();
+                startIndex = index;
+                endIndex = text.indexOf(endURL, index);
+                if(index ==-1){
+                    break;
+                }
+                URLs.add(text.substring(startIndex,endIndex));
             }
         }
 
 
-        String Path = _URL.getPath();
-        String Host = _URL.getHost();
       return URLs ;
     }
 }
