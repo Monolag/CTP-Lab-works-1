@@ -8,7 +8,6 @@ public class WebCrawler {
     public static void main(String[] args) {
 
         int depth = 0;
-		String URL = "", sDepth = "";
 
 		//Проверка введенных данных
         if (args.length != 2) {
@@ -34,7 +33,7 @@ public class WebCrawler {
             checkedURLs.add(depthP);
             int myDepth = depthP.getDepth();
 
-            links = WebCrawler.getLinks(usedDP);
+            links = WebCrawler.getLinks(depthP);
 
             // TODO Проверить: если заявленная глубина не достигнута,
             // TODO добавить сайт, который не был проверен
@@ -58,6 +57,7 @@ public class WebCrawler {
         Socket socket;
         try {
             socket = new Socket(_URL.getHost(), 80);
+            socket.setSoTimeout(3000);
         }
         catch(IOException ex){return null;}
 
@@ -72,15 +72,24 @@ public class WebCrawler {
         try{
             ostr = socket.getOutputStream();
         }
-        catch(IOException ex){return null; }
+        catch(IOException ex){
+            return null;
+        }
 
-        // TODO тут должен быть какой-то запрос к серверу?
+        PrintWriter myWriter = new PrintWriter(ostr, true);
+        myWriter.println("GET " + Path + " HTTP/1.1");
+        myWriter.println("Host: " + Host);
+        myWriter.println("Connection: close");
+        myWriter.println();
 
         InputStream inStr;
+
         try{
             inStr = socket.getInputStream();
         }
-        catch(IOException ex){return null;}
+        // TODO Почему в  OutputStream ostr нет ошибки, а в  InputStream inStr заходит в catch, хотя такого быть не должно
+        catch(IOException ex){
+            return URLs;}
 
         InputStreamReader readInput = new InputStreamReader(inStr);
         BufferedReader readBuffer = new BufferedReader(readInput);
@@ -102,13 +111,19 @@ public class WebCrawler {
 
             while(index != -1){
                 //Найти начало нужной строки
-                index = text.indexOf(startURL, index);
-                index += startURL.length();
-                startIndex = index;
-                endIndex = text.indexOf(endURL, index);
+                try {
+                    index = text.indexOf(startURL, index);
+                }
+                catch(NullPointerException ex){
+                    return URLs;
+                }
                 if(index ==-1){
                     break;
                 }
+                index += startURL.length();
+                startIndex = index;
+                endIndex = text.indexOf(endURL, index);
+                index = endIndex;
                 URLs.add(text.substring(startIndex,endIndex));
             }
         }
