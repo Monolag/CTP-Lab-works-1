@@ -2,49 +2,39 @@ import java.net.*;
 import java.util.*;
 import java.io.*;
 
-
-public class WebCrawler {
+class WebCrawler {
+    
 
     public static void main(String[] args) {
-
         int depth = 0;
+        int numThreads = 4;
 
-
-		//Проверка введенных данных
         if (args.length != 2) {
             System.out.println("usage: java Crawler <URL> <depth>");
             System.exit(1);
-        } else {
+        }
+        else {
             try {
                 depth = Integer.parseInt(args[1]);
-            } catch (NumberFormatException nfe) {
+            }
+            catch (NumberFormatException nfe) {
+
                 System.out.println("usage: java Crawler <URL> <depth>");
                 System.exit(1);
             }
         }
-        LinkedList<URL_DP> checkURLs = new LinkedList<URL_DP>();
-        LinkedList<URL_DP> checkedURLs = new LinkedList<URL_DP>();
-        LinkedList<URL_DP> checkingURLs = new LinkedList<URL_DP>();
-        URL_DP usedDP = new URL_DP(args[0], 0);
-        LinkedList<String> links = new LinkedList<String>();
-        checkURLs.add(usedDP);
 
-        while(checkURLs.size() != 0) {
-            URL_DP depthP = checkURLs.pop();
-            checkedURLs.add(depthP);
-            int myDepth = depthP.getDepth();
+        URL_DP currentDepthPair = new URL_DP(args[0], 0);
+        URLPool pool = new URLPool();
 
-            links = WebCrawler.getLinks(depthP);
-
-            // TODO Проверить: если заявленная глубина не достигнута,
-            // TODO добавить сайт, который не был проверен
-
+        //Iterator<URL_DP> iter = pool.checkedURLs.iterator();
+        while (iter.hasNext()) {
+            System.out.println(iter.next());
         }
-        //Пройти через все собранные URL и вывести каждый
-        Iterator<URL_DP> iterator = checkedURLs.iterator();
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
-        }
+        System.exit(0);
+        
+
+
     }
 
     public static LinkedList<String> getLinks(URL_DP _URL){
@@ -131,6 +121,6 @@ public class WebCrawler {
         }
 
 
-      return URLs ;
+        return URLs ;
     }
 }
