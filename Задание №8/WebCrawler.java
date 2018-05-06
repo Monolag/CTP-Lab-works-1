@@ -7,7 +7,7 @@ class WebCrawler {
 
     public static void main(String[] args) {
         int depth = 0;
-        int numThreads = 4;
+        int neededThreads = 4;
 
         if (args.length != 2) {
             System.out.println("usage: java Crawler <URL> <depth>");
@@ -26,8 +26,26 @@ class WebCrawler {
 
         URL_DP currentDepthPair = new URL_DP(args[0], 0);
         URLPool pool = new URLPool();
+        pool.put(currentDepthPair);
+        int ActiveTr = Thread.activeCount();
 
-        //Iterator<URL_DP> iter = pool.checkedURLs.iterator();
+
+        while (pool.getThreads() != neededThreads) {
+           // Если кол-во потоков меньше запрашиваемого кол-ва, создать еще поток и
+            //передать его в CrawlerTask
+            if (Thread.activeCount() - ActiveTr < neededThreads) {
+                CrawlerTask crawler = new CrawlerTask(pool);
+                new Thread(crawler).start();
+            } else {
+                try {
+                    Thread.sleep(100);
+                }
+                catch (InterruptedException ie) {
+                }
+            }
+        }
+
+        Iterator<URL_DP> iter = pool.checkingURLs.iterator();
         while (iter.hasNext()) {
             System.out.println(iter.next());
         }

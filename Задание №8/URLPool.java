@@ -4,13 +4,27 @@ import java.util.*;
 public class URLPool {
 
 
-    LinkedList<URL_DP> checkURLs = new LinkedList<URL_DP>();
-    LinkedList<URL_DP> checkingURLs = new LinkedList<URL_DP>();
+    private LinkedList<URL_DP> checkURLs = new LinkedList<URL_DP>();
+    public LinkedList<URL_DP> checkingURLs = new LinkedList<URL_DP>();
     private ArrayList<String> checkedURLs = new ArrayList<String>();
     public int queueThreads;
 
     public int getThreads(){
         return queueThreads;
     }
+
+    public synchronized boolean put(URL_DP depthPair) {
+
+        boolean success = false;
+        return success;
+
+    }
+
+    public synchronized URL_DP get() {
+
+        URL_DP myDP = null;
+        return myDP;
+    }
+
 
 }
